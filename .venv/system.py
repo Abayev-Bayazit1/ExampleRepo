@@ -15,6 +15,12 @@ class System:
 
         if user:
             print(f"Login completed! Welcome,{user[0]}.Your role is {user[1]}")
+
+            if user[1] == "admin":
+                self.admin_menu()
+            else:
+                print("smth")
+
         else:
             print("Login failed")
 
@@ -35,3 +41,54 @@ class System:
         except ValueError:
             print("\nEnter correct login details")
 
+    def view_all_users(self):
+       users =  self.db.view_all_users()
+
+       if not users:
+           print("No users registered")
+
+       print("\nUsers:")
+       for user in users:
+           print(f"🆔 {user[0]} | 👤 {user[1]} | 🎭 Role: {user[2]}")
+
+
+    def delete_user(self):
+        name = input("Enter name for delete: ")
+
+        try:
+            if self.db.delete_user(name):
+                print("Deleted user")
+
+            else:
+                print("User not found")
+
+        except ValueError:
+            print("Error with deleting user..")
+
+
+
+    def admin_menu(self):
+        while True:
+            print("[1].View all registered users")
+            print("[2].Delete registered users")
+            print("[3].Back")
+
+
+            try:
+                choise = int(input("Enter your choice : "))
+            except ValueError:
+                print("Choise must be an integer")
+                continue
+
+            if choise == 1:
+                self.view_all_users()
+
+            elif choise == 2:
+                self.delete_user()
+
+            elif choise == 3:
+                print("🔙 Backing...")
+                break
+
+            else:
+                print("❌ Invalid choice")

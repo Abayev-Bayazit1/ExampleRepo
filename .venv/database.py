@@ -29,6 +29,18 @@ class Database:
 
         return self.cursor.fetchone()
 
+    def view_all_users(self):
+        self.cursor.execute("SELECT id,name,role FROM users")
+        # self.conn.commit()
+        return self.cursor.fetchall()
+
+
+
+    def delete_user(self,name):
+        self.cursor.execute("DELETE FROM users WHERE name = %s",(name,))
+        self.conn.commit()
+        return self.cursor.rowcount > 0
+
 
 
     def close(self):
