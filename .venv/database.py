@@ -1,7 +1,7 @@
 import psycopg2
 
 class Database:
-    #Коннектимся к Бд
+    #Коннектимся к БД
     def __init__(self):
         self.conn = psycopg2.connect(dbname = "example",
                                      user = "postgres",
