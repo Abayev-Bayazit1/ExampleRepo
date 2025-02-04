@@ -1,12 +1,13 @@
-from wsgiref.validate import check_iterator
+from database import Database
 
-from abc import ABC, abstractmethod
+
+
 
 
 class System(object):
 
-    def __init__(self):
-        self.users = []
+    def __init__(self,db):
+        self.db = db
 
 
     def login(self):
@@ -14,12 +15,13 @@ class System(object):
         name = input("Enter your name: ")
         password = input("Enter your password: ")
 
-        for user in self.users:
-            if user["name"] == name and user["password"] == password:
-                print("Login Successful,your role is {user['role']}")
-                return
+        user  = self.db.get_user(name,password)
 
-        print("Incorrect username or password")
+        if user:
+            print(f"Login completed! Welcome,{user[0]}.Your role is {user[1]}")
+        else:
+            print("Login failed")
+
 
 
     def register(self):
@@ -30,14 +32,10 @@ class System(object):
             password = input("Enter your password : ")
             role =input("Enter your role : ")
 
-
-            for user in self.users:
-                if user.name == name:
-                     print("\nUser already exists")
-                else:
-                    self.users.append({"name":name,"password":password,"role":role})
-                    print("\nRegistered successfully")
-
+            if self.db.add_user(name,password,role):
+                print("✅ Registered successfully")
+            else:
+                print("❌ User already exists" )
 
         except ValueError:
             print("\nEnter correct login details")
@@ -45,10 +43,11 @@ class System(object):
 
 
 
-
 def main():
+    db = Database()
+    system = System(db)
 
-    system = System()
+
 
     while True:
         print("[1].Login ")
@@ -71,8 +70,8 @@ def main():
 
         elif choise == 3:
             print("Exitting from the application...")
+            db.close()
             break
-
 
         else:
             print("Invalid choice")
