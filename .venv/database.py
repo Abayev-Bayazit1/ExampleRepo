@@ -42,6 +42,12 @@ class Database:
         return self.cursor.rowcount > 0
 
 
+    def update_user_password(self,name,password):
+        self.cursor.execute("UPDATE users SET password = %s WHERE name = %s",(password,name))
+        self.conn.commit()
+        return self.cursor.rowcount > 0
+
+
 
     def close(self):
         self.cursor.close()

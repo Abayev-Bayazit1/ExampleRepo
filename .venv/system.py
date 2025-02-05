@@ -18,8 +18,12 @@ class System:
 
             if user[1] == "admin":
                 self.admin_menu()
+
+            elif user[1] == "user":
+                self.user_menu()
+
             else:
-                print("smth")
+                print("Error with login attempt")
 
         else:
             print("Login failed")
@@ -66,6 +70,21 @@ class System:
             print("Error with deleting user..")
 
 
+    def update_user_password(self):
+
+        try:
+            name = input("Enter your name : ")
+            password = input("Enter your password : ")
+
+            if self.db.update_user_password(name,password):
+                print("Password updated successfully")
+            else:
+                print("Password update failed")
+
+        except ValueError:
+            print("Error with updating password")
+
+
 
     def admin_menu(self):
         while True:
@@ -92,3 +111,30 @@ class System:
 
             else:
                 print("❌ Invalid choice")
+
+
+    def user_menu(self):
+        while True:
+            print("\nUser menu:")
+            print("[1].Update password")
+            print("[2].Back")
+
+            try:
+                choise = int(input("\nEnter your choice : "))
+            except ValueError:
+                print("Choise must be an integer")
+                continue
+
+            if choise == 1:
+                self.update_user_password()
+
+            elif choise == 2:
+                print("Backing...")
+                break
+
+
+            else:
+                print("Invalid choice")
+
+
+
