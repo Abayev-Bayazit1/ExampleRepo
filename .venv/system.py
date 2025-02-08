@@ -6,6 +6,7 @@ class System:
     def __init__(self,db):
         self.db = db
 
+
     def login(self):
         print("\nEnter username and password")
         name = input("Enter your name: ")
@@ -44,6 +45,7 @@ class System:
 
         except ValueError:
             print("\nEnter correct login details")
+
 
     def view_all_users(self):
        users =  self.db.view_all_users()
@@ -85,6 +87,47 @@ class System:
             print("Error with updating password")
 
 
+    def update_username(self):
+        try:
+            new_username = input("Enter new username: ")
+            password = input("Enter your current password : ")
+
+            if self.db.update_username(new_username,password):
+                print("Username updated successfully")
+            else:
+                print("Username update failed")
+        except ValueError:
+            print("Error with updating username")
+
+
+
+    def user_settings(self):
+        while True:
+            print("\nUser settings:")
+            print("[1].Update password")
+            print("[2].Update username")
+            print("[3].Back")
+
+            try:
+                choise = int(input("Enter your choice: "))
+            except ValueError:
+                print("Error with updating settings")
+                continue
+
+            if choise == 1:
+                self.update_user_password()
+
+            elif choise == 2:
+                self.update_username()
+
+            elif choise == 3:
+                print("Backing...")
+                break
+
+            else:
+                print("Invalid choice")
+
+
 
     def admin_menu(self):
         while True:
@@ -116,8 +159,8 @@ class System:
     def user_menu(self):
         while True:
             print("\nUser menu:")
-            print("[1].Update password")
-            print("[2].Back")
+            print("[1].Settings")
+            print("[3].Back")
 
             try:
                 choise = int(input("\nEnter your choice : "))
@@ -126,9 +169,10 @@ class System:
                 continue
 
             if choise == 1:
-                self.update_user_password()
+                self.user_settings()
 
-            elif choise == 2:
+
+            elif choise == 3:
                 print("Backing...")
                 break
 

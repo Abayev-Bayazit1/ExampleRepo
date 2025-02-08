@@ -48,6 +48,28 @@ class Database:
         return self.cursor.rowcount > 0
 
 
+    def update_username(self,new_username,password):
+        try:
+            self.cursor.execute("SELECT id FROM users WHERE password = %s",(password,))
+            user = self.cursor.fetchone()
+
+            if not user:
+                print("User not found or password is incorrect")
+
+            self.cursor.execute("UPDATE users SET name = %s WHERE password = %s",(new_username,password))
+            self.conn.commit()
+
+            return self.cursor.rowcount > 0
+        except psycopg2.IntegrityError:
+            self.conn.rollback()
+            return False
+
+
+    def  view_generalInformation(self):
+        self.cursor.execute("")
+        self.conn.commit()
+        return self.cursor.fetchall()
+
 
     def close(self):
         self.cursor.close()
